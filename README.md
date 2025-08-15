@@ -1,7 +1,7 @@
 ﻿
 # Kattalyxlabs
 
-This is a TypeScript backend project for the Aahar application, utilizing Express, Sequelize, and Swagger for API documentation.
+This is a TypeScript backend project for the Kattalyxlabs application, utilizing Express, Sequelize, and Swagger for API documentation.
 
 ## Prerequisites
 
@@ -98,3 +98,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Replace `https://github.com/yourusername/aahar-backend.git` with the actual URL of your repository.
 
 - You can add more sections as needed, such as contributing guidelines, testing instructions, or additional features of your application.
+
