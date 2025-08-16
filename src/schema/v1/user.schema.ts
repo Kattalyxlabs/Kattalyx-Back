@@ -1,38 +1,19 @@
-/**
- * @swagger
- * components:
- *   schemas:
- *     CreateUser:
- *       type: object
- *       required:
- *         - email
- *         - phone
- *       properties:
- *         email:
- *           type: string
- *           example: user@example.com
- *         phone:
- *           type: string
- *           example: "9876543210"
- */
+import mongoose, { Schema } from 'mongoose';
+import { IUser } from '../../types/schema/v1/user.type';
 
-/**
- * @swagger
- * /create_user:
- *   post:
- *     summary: Create a new user
- *     description: API to create a new user
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/CreateUser'
- *     responses:
- *       201:
- *         description: User created successfully
- *       400:
- *         description: Invalid input
- */
-export default {};
+const userSchema = new Schema<IUser>(
+  {
+    role: {
+      type: String,
+      enum: ['normal_user', 'admin', 'super_admin', 'speaker'],
+      default: 'normal_user',
+      required: true,
+    },
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model<IUser>('User', userSchema);
