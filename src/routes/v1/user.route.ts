@@ -4,6 +4,9 @@ import UserController from "../../controller/v1/user.controller.js";
 const route = express.Router();
 const userController = new UserController();
 
+
+
+
 /**
  * @swagger
  * /user/create_user:
@@ -42,8 +45,8 @@ const userController = new UserController();
  *       400:
  *         description: Invalid input
  */
-route.post("/create_user", (req, res) => userController.createUserController(req, res));
-
+route.post("/create_user", (req, res) => userController.createUserController(req, res)); // done
+ 
 /**
  * @swagger
  * /user/{email}:
@@ -106,7 +109,9 @@ route.post("/create_user", (req, res) => userController.createUserController(req
  *       404:
  *         description: User not found
  */
-route.get("/:email", (req, res) => userController.getUserByEmailController(req, res));
+route.get('/email/:email', (req, res) =>
+  userController.getUserByEmailController(req, res)
+); // done
 
 /**
  * @swagger
@@ -143,7 +148,7 @@ route.get("/:email", (req, res) => userController.getUserByEmailController(req, 
  *       404:
  *         description: User not found
  */
-route.put("/:id", (req, res) => userController.updateUserController(req, res));
+route.put("/:id", (req, res) => userController.updateUserController(req, res)); // done
 
 /**
  * @swagger
@@ -207,7 +212,7 @@ route.put("/:id", (req, res) => userController.updateUserController(req, res));
  *       404:
  *         description: User not found
  */
-route.get("/:id", (req, res) => userController.getUserByIdController(req, res));
+route.get("/:id", (req, res) => userController.getUserByIdController(req, res)); // done
 
 /**
  * @swagger
@@ -229,6 +234,6 @@ route.get("/:id", (req, res) => userController.getUserByIdController(req, res));
  *       404:
  *         description: User not found
  */
-route.delete("/:id", (req, res) => userController.deleteUserController(req, res));
+route.delete("/:id", (req, res) => userController.deleteUserController(req, res)); // done
 
 export default route;
