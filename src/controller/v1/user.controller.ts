@@ -3,6 +3,7 @@ import UserService from "../../services/v1/user.service.js";
 import statusCode from "../../constant/common/statusCode.js";
 import errorResponse from "../../constant/common/error.js";
 
+
 export default class UserController {
   private userService: UserService;
 
@@ -10,110 +11,178 @@ export default class UserController {
     this.userService = new UserService();
   }
 
+  async getUserInfoController(req: Request, res: Response): Promise<void> {
+    console.log('controller->v1->user.controller->getUserInfoController');
+
+    try {
+      console.log('req.params:', req.params);
+      console.log('req.body:', req.body);
+      console.log('req.query:', req.query);
+      const { userId } = req.params;
+      console.log(userId);
+
+      const data = await this.userService.getUserInfoService(userId);
+      res.status(statusCode.OK).send({
+        message: 'User information fetched successfully',
+        data: data,
+      });
+      console.log('from the service', data);
+    } catch (error: any) {
+      console.log(error);
+
+      if (error.message === errorResponse.INVALID_INPUT) {
+        res
+          .status(statusCode.BAD_REQUEST)
+          .send({ message: errorResponse.INVALID_INPUT });
+      } else if (error.message === errorResponse.USER_NOT_FOUND) {
+        res
+          .status(statusCode.NOT_FOUND)
+          .send({ message: errorResponse.USER_NOT_FOUND });
+      } else {
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+      }
+    }
+  }
+
   async createUserController(req: Request, res: Response): Promise<void> {
-    console.log("controller->v1->user.controller->createUserController");
+    console.log('controller->v1->user.controller->createUserController');
 
     try {
       const data = await this.userService.createUserService(req.body);
       res.status(statusCode.CREATED).send({
-        message: "User successfully created",
-        data: data 
+        message: 'User successfully created',
+        data: data,
       });
     } catch (error: any) {
       console.log(error);
 
       if (error.message === errorResponse.INVALID_INPUT) {
-        res.status(statusCode.BAD_REQUEST).send({ message: errorResponse.INVALID_INPUT });
+        res
+          .status(statusCode.BAD_REQUEST)
+          .send({ message: errorResponse.INVALID_INPUT });
       } else if (error.message === errorResponse.USER_ALREADY_EXIST) {
-        res.status(statusCode.UNAUTHORIZED).send({ message: errorResponse.USER_ALREADY_EXIST });
+        res
+          .status(statusCode.UNAUTHORIZED)
+          .send({ message: errorResponse.USER_ALREADY_EXIST });
       } else {
-        res.status(statusCode.INTERNAL_SERVER_ERROR).send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
       }
     }
   }
 
   async getUserByEmailController(req: Request, res: Response): Promise<void> {
-    console.log("controller->v1->user.controller->getUserByEmailController");
+    console.log('controller->v1->user.controller->getUserByEmailController');
 
     const { email } = req.params;
+    console.log(email);
 
     try {
       const user = await this.userService.getUserByEmailService(email);
-      res.status(statusCode.OK).send({ message: "User found", data: user });
+      res.status(statusCode.OK).send({ message: 'User found', data: user });
     } catch (error: any) {
       console.log(error);
       if (error.message === errorResponse.INVALID_EMAIL) {
-        res.status(statusCode.BAD_REQUEST).send({ message: errorResponse.INVALID_EMAIL });
+        res
+          .status(statusCode.BAD_REQUEST)
+          .send({ message: errorResponse.INVALID_EMAIL });
       } else if (error.message === errorResponse.USER_NOT_FOUND) {
-        res.status(statusCode.NOT_FOUND).send({ message: errorResponse.USER_NOT_FOUND });
+        res
+          .status(statusCode.NOT_FOUND)
+          .send({ message: errorResponse.USER_NOT_FOUND });
       } else {
-        res.status(statusCode.INTERNAL_SERVER_ERROR).send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
       }
     }
   }
 
   async updateUserController(req: Request, res: Response): Promise<void> {
-    console.log("controller->v1->user.controller->updateUserController");
+    console.log('controller->v1->user.controller->updateUserController');
 
     const { id } = req.params;
     const updateData = req.body;
 
     try {
-      const updatedUser = await this.userService.updateUserService(Number(id), updateData);
+      const updatedUser = await this.userService.updateUserService(
+        id,
+        updateData
+      );
       res.status(statusCode.OK).send({
-        message: "User updated successfully",
-        data: updatedUser
+        message: 'User updated successfully',
+        data: updatedUser,
       });
     } catch (error: any) {
       console.log(error);
       if (error.message === errorResponse.INVALID_INPUT) {
-        res.status(statusCode.BAD_REQUEST).send({ message: errorResponse.INVALID_INPUT });
+        res
+          .status(statusCode.BAD_REQUEST)
+          .send({ message: errorResponse.INVALID_INPUT });
       } else if (error.message === errorResponse.USER_NOT_FOUND) {
-        res.status(statusCode.NOT_FOUND).send({ message: errorResponse.USER_NOT_FOUND });
+        res
+          .status(statusCode.NOT_FOUND)
+          .send({ message: errorResponse.USER_NOT_FOUND });
       } else {
-        res.status(statusCode.INTERNAL_SERVER_ERROR).send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
       }
     }
   }
 
   async deleteUserController(req: Request, res: Response): Promise<void> {
-    console.log("controller->v1->user.controller->deleteUserController");
+    console.log('controller->v1->user.controller->deleteUserController');
 
     const { id } = req.params;
+    console.log('Controller ID:', id, typeof id);
 
     try {
-      await this.userService.deleteUserService(Number(id));
+      await this.userService.deleteUserService(id);
       res.status(statusCode.OK).send({
-        message: "User deleted successfully"
+        message: 'User deleted successfully',
       });
     } catch (error: any) {
       console.log(error);
       if (error.message === errorResponse.USER_NOT_FOUND) {
-        res.status(statusCode.NOT_FOUND).send({ message: errorResponse.USER_NOT_FOUND });
+        res
+          .status(statusCode.NOT_FOUND)
+          .send({ message: errorResponse.USER_NOT_FOUND });
       } else {
-        res.status(statusCode.INTERNAL_SERVER_ERROR).send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
       }
     }
   }
   async getUserByIdController(req: Request, res: Response): Promise<void> {
-    console.log("controller->v1->user.controller->getUserByIdController");
+    console.log('controller->v1->user.controller->getUserByIdController');
 
     try {
       const { id } = req.params;
-      const user = await this.userService.getUserByIdService(Number(id));
+      const user = await this.userService.getUserByIdService(id);
 
       res.status(statusCode.OK).send({
-        message: "User fetched successfully",
+        message: 'User fetched successfully',
         data: user,
       });
     } catch (error: any) {
       console.log(error);
       if (error.message === errorResponse.INVALID_ID) {
-        res.status(statusCode.BAD_REQUEST).send({ message: errorResponse.INVALID_ID });
+        res
+          .status(statusCode.BAD_REQUEST)
+          .send({ message: errorResponse.INVALID_ID });
       } else if (error.message === errorResponse.USER_NOT_FOUND) {
-        res.status(statusCode.NOT_FOUND).send({ message: errorResponse.USER_NOT_FOUND });
+        res
+          .status(statusCode.NOT_FOUND)
+          .send({ message: errorResponse.USER_NOT_FOUND });
       } else {
-        res.status(statusCode.INTERNAL_SERVER_ERROR).send({ message: errorResponse.INTERNAL_SERVER_ERROR });
+        res
+          .status(statusCode.INTERNAL_SERVER_ERROR)
+          .send({ message: errorResponse.INTERNAL_SERVER_ERROR });
       }
     }
   }

@@ -3,12 +3,12 @@ import User from '../schema/v1/user.schema';
 import Event from '../schema/v1/event.schema';
 import School from '../schema/v1/school.schema';
 import Package from '../schema/v1/package.schema';
-
+import connectMongo from '../config/database.config.js';
 
 async function seed() {
   try {
     // ✅ DB connect
-    await mongoose.connect('mongodb://127.0.0.1:27017/mydatabase');
+    await connectMongo();
     console.log('✅ MongoDB Connected for seeding');
 
     // ✅ Clean old data (optional)
