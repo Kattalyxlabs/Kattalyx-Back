@@ -9,5 +9,4 @@ const packageSchema = new Schema<IPackage>(
   },
   { timestamps: true }
 );
-
-module.exports = mongoose.model<IPackage>('Package', packageSchema);
+ export default mongoose.model<IPackage>('Package', packageSchema);

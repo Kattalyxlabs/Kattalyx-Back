@@ -31,5 +31,4 @@ const schoolSchema = new Schema<ISchool>(
   },
   { timestamps: true }
 );
-
-module.exports = mongoose.model<ISchool>('School', schoolSchema);
+export default mongoose.model<ISchool>('School', schoolSchema);
