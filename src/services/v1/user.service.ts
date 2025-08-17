@@ -60,7 +60,17 @@ export default class UserService {
             throw new Error(errorResponse.USER_NOT_FOUND);
         }
 
+<<<<<<< HEAD
         return this.userDao.updateUserDao(id, updateData);
+=======
+    if (!id) throw new Error(errorResponse.INVALID_ID);
+console.log("User finding started")
+
+    const existingUser = await this.userDao.getUserByIdDao(id);
+    console.log('User finding Ended');
+    if (!existingUser) {
+      throw new Error(errorResponse.USER_NOT_FOUND);
+>>>>>>> eb2a204 (package all operation complited)
     }
 
     async deleteUserService(id: number): Promise<boolean> {
